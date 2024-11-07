@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EvoSolver</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+    <div class="principal">
+        <header class="header">
+            <div class="header_principal">
+                <h1>EvoSolver</h1>
+                <p>Encuentra la solución óptima, genéticamente.</p>
+                <input type="search" id="buscador" placeholder="search" oninput="buscarSeccion()">
+                <div id="resultadosBusqueda" class="resultados-busqueda"></div>
+                <img src="img/logo.jpg" alt="logo">
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="menu-lateral">
+                <ul class="menu">
+                    <li><a href="">Definir Funcion Objetivo</a></li>
+                    <li><a href="#implementarFuncionObjetivo">Implementar Funcion Objetivo</a></li>
+                    <li><a href="#crearIndividuo">Crear Individuo</a></li>
+                    <li><a href="#crearPoblacion">Crear Población</a></li>
+                    <li><a href="#evaluarPoblacion">Evaluar Poblacion</a></li>
+                    <li>
+                        <a href=""class="toggle">Seleccion</a>
+                        <ul class="sub_menu">
+                            <li><a href="#seleccionTorneo">Seleccion por Torneo</a></li> 
+                            <li><a href="#seleccionRanking">Seleccion por Ranking</a></li> 
+                            <li><a href="#seleccionRuleta">Seleccion por Ruleta</a></li> 
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="" class="toggle">Cruce</a>
+                        <ul class="sub_menu">
+                            <li><a href="#crucePunto">Cruce de un punto</a></li>
+                            <li><a href="#cruceDosPuntos">Cruce de dos puntos</a></li>
+                            <li><a href="#cruceUniforme">Cruce Uniforme</a></li>
+                            <li><a href="#crucePromedioAritmetico">Cruce por Promedio Aritmetico</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#mutacion">Mutacion</a></li>
+                    <li><a href="#sustitucion">Sustitucion</a></li>
+                </ul>
+
+            </div>
+            <div class="lateral_derecho">
+                <section class="variablesIniciales" id="contenedor_titulos">
+                    <h2 class="contenido_todo">Definir función objetivo</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def ingresar_funcion_objetivo():
+                                return input("Ingrese la función objetivo en términos de x (por ejemplo: 'x**2 + math.sin(x)'): ")
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción</h4>
+                    <p>Solicita al usuario que ingrese una función matemática en términos de x. Esta función se utiliza para recoger la expresión de la función objetivo que se evaluará posteriormente.</p>
+                    <h4 class="titulo-h4">Parámetros:</h4>
+                    <p>No tiene parámetros.</p>
+                    <h4 class="titulo-h4">Retorno:</h4>
+                    <p>Un string que contiene la expresión de la función objetivo ingresada por el usuario (por ejemplo, 'x**2 + math.sin(x)').</p>
+                    <h4 class="titulo-h4">Ejemplo de uso desde otro archivo</h4>
+                    <p>
+                        <h4>Llama a la función </h4>
+                        <div class="contenedor_codigo_ejemplo">
+                            <pre class="preCode">
+                                expresion = ingresar_funcion_objetivo()
+                                print(f"Función ingresada: {expresion}")
+                            </pre>
+                        </div>
+                    </p>
+                </section>
+                
+                <section class="implementarFuncionObjetivo" id="implementarFuncionObjetivo">
+                    <h2 class="contenido_todo">Implementar función objetivo</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def funcion_objetivo(funcion_expresion, x): 
+                                try:
+                                    return eval(funcion_expresion, {"x": x, "math": math})
+                                except Exception as e:
+                                    print(f"Error al evaluar la función: {e}")
+                                 return None
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción:</h4>
+                    <p>Evalúa la expresión de la función objetivo ingresada en función del valor de x proporcionado. Esta función permite calcular el resultado de la expresión con la biblioteca math para facilitar el uso de funciones matemáticas avanzadas.</p>
+                    <h4 class="titulo-h4">Parámetros:</h4>
+                    <ul>
+                        <li><h4>funcion_expresion (str):</h4><p>La expresión de la función objetivo como string (por ejemplo, 'x**2 + math.sin(x)').
+                        </p></li>
+                        <li><h4>x (float):</h4><p>El valor de x que se utilizará para evaluar la expresión.</p></li>
+                    </ul>
+                    <h4 class="titulo-h4">Retorno:</h4>
+                    <p>Un número de tipo flotante con el resultado de la evaluación de la expresión de la función. En caso de error, imprime el mensaje de error y devuelve None.</p>
+                    <h4 class="titulo-h4">Excepciones</h4>
+                    <p>La función captura excepciones genéricas que puedan surgir al evaluar la expresión (por ejemplo, errores de sintaxis o valores fuera de rango) y muestra un mensaje informativo.</p>
+                    <h4 class="titulo-h4">Ejemplo de uso desde otro archivo</h4>
+                    <p>
+                        <h4>Llama a la función pasando la expresión y un valor de x</h4>
+                        <div class="contenedor_codigo_ejemplo">
+                            <pre class="preCode">
+                                resultado = funcion_objetivo('x**2 + math.sin(x)', 2.0)
+                                print(f"Resultado de la función objetivo: {resultado}")
+                            </pre>
+                        </div>
+                    </p>
+                        
+                </section>
+                <section class="crearIndividuo" id="crearIndividuo">
+                    <h2 class="contenido_todo">Crear Individuo</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def crear_individuo(valor_min, valor_max):   
+                                if valor_min >= valor_max:
+                                    raise ValueError('Error al ingresar el valor mínimo o máximo')
+                                return random.uniform(valor_min, valor_max)
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción</h4>
+                    <p>Esta función genera un número aleatorio de tipo flotante dentro de un rango definido por dos valores, representando un "individuo" de una población. Se utiliza principalmente en contextos como algoritmos genéticos o simulaciones, donde se necesita crear individuos aleatorios dentro de ciertos límites.
+                    </p>
+                    <h4 class="titulo-h4">Parámetros</h4>
+                    <ul>
+                        <li><h4>valor_min (float): </h4>El límite inferior del rango permitido para el valor del individuo.</li>
+                        <li><h4>valor_max (float): </h4>El límite superior del rango permitido para el valor del individuo.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Retorno: </h4>Un número aleatorio de tipo flotante dentro del rango [valor_min, valor_max]</li>
+                    <h4 class="titulo-h4">Excepciones</h4>
+                    <p><h4>ValueError:</h4>La función lanzará una excepción ValueError si el valor_min es mayor que el valor_max.</p>
+                    <h4 class="titulo-h4">Ejemplo de uso </h4>
+                    <p>
+                        <h4>Llama a la función con los valores deseados:</h4>
+                        <div class="contenedor_codigo_ejemplo">
+                            <pre class="preCode">
+                                individuo = crear_individuo(0.0, 10.0)
+                                print(individuo)
+                            </pre>
+                        </div>
+                    </p>
+                </section>
+                <section class="crearPoblacion" id="crearPoblacion">
+                    <h2 class="contenido_todo">Crear Poblacion</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def crear_poblacion(tamano, valor_min, valor_max):
+                                if valor_min >= valor_max:
+                                    raise ValueError('Error al ingresar el valor mínimo o máximo')
+                                return [crear_individuo(valor_min, valor_max) for _ in range(tamano)]
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción</h4>
+                    <p>Genera una lista de individuos aleatorios, creando una "población" de un tamaño especificado. Cada individuo es un número aleatorio dentro de un rango definido por un valor mínimo y un valor máximo. Esta función es útil en simulaciones o algoritmos evolutivos donde se necesita una población inicial de valores aleatorios.
+                    </p>
+                    <h4 class="titulo-h4">Parámetros</h4>
+                    <ul>
+                        <li><h4>tamano (int):</h4> La cantidad de individuos a generar en la población.</li>
+                        <li><h4>valor_min (float):</h4> El valor mínimo del rango para cada individuo.</li>
+                        <li><h4>valor_max (float):</h4> El valor máximo del rango para cada individuo.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Retorno</h4>
+                    <p>Una lista de números de tipo flotante, donde cada número representa un individuo en el rango [valor_min, valor_max].</p>
+                    <h4 class="titulo-h4">Excepciones</h4>
+                    <p>ValueError: Si valor_min es mayor o igual que valor_max, la función lanzará un ValueError indicando que el valor mínimo o máximo es incorrecto.<p>
+                    <h4 class="titulo-h4">Ejemplo de uso</h4>
+                    <p>
+                        <h4>Llama a la función con el tamaño de la población y el rango deseado:</h4>
+                        <div class="contenedor_codigo_ejemplo">
+                            <pre class="preCode">
+                                poblacion = crear_poblacion(5, 0.0, 10.0)
+                                print(f"Población generada: {poblacion}")
+                            </pre>
+                        </div>
+                    </p>
+                       
+                </section>
+                <section class="evaluarPoblacion" id="evaluarPoblacion">
+                    <h2 class="contenido_todo">Evaluar Poblacion</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def evaluar_poblacion(poblacion, funcion_objetivo):
+                            return [funcion_objetivo(ind) for ind in poblacion]           
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción</h4>
+                    <p>Evalúa cada individuo en una población utilizando una función objetivo específica. La función recorre todos los individuos de la población y aplica la función objetivo a cada uno, obteniendo una lista de los resultados. Esta función es útil en algoritmos de optimización y simulaciones donde se requiere evaluar la aptitud o valor de cada individuo en función de una meta.</p>
+                    <h4 class="titulo-h4">Parámetros</h4>
+                    <ul>
+                        <li><h4>Poblacion (list):</h4> Una lista de individuos, donde cada uno representa un valor que será evaluado.</li>
+                        <li><h4>funcion_objetivo (función):</h4> Una función que toma un solo argumento (un individuo) y devuelve un valor evaluado (por ejemplo, una función matemática o de aptitud).</li>
+                    </ul>
+                    <h4 class="titulo-h4">Retorno</h4>
+                    <p>Una lista de resultados, donde cada elemento es el valor evaluado de un individuo en la población según la función objetivo proporcionada.</p>
+                    <h4 class="titulo-h4">Ejemplo de uso desde otro archivo</h4>
+                    <p>
+                        <h4>Evalua la población:</h4>
+                        <div class="contenedor_codigo_ejemplo">
+                            <pre class="preCode">
+                                # Evalúa la población usando la función objetivo de EvoSolver
+                                resultados = evaluar_poblacion(poblacion, funcion_objetivo)
+                            </pre>
+                        </div>
+                    </p>
+      
+                </section>
+                <section class="seleccionTorneo" id="seleccionTorneo">
+                    <h2 class="contenido_todo">Selección por Torneo</h2><br>
+                        <div class="contenedor_codigo">
+                            <pre class="preCode">
+                                def seleccion_por_torneo(poblacion, puntuaciones, k=3):
+                                    seleccionados = random.sample(range(len(poblacion)), k)
+                                    puntuaciones_seleccionados = [puntuaciones[i] for i in seleccionados]
+                                    return poblacion[seleccionados[puntuaciones_seleccionados.index(min(puntuaciones_seleccionados))]]           
+                            </pre>
+                        </div>
+                        <h4 class="titulo-h4">Descripción</h4>
+                        <p>Realiza una selección por torneo de un individuo de una población basada en sus puntuaciones. Se eligen aleatoriamente k individuos y se selecciona el que tiene la puntuación más baja entre ellos.<br></p>
+                        <h4 class="titulo-h4"3>Parámetros</h4>
+                        <p>Realiza una selección por torneo de un individuo de una población basada en sus puntuaciones. Se eligen aleatoriamente k individuos y se selecciona el que tiene la puntuación más baja entre ellos.
+                        <ul>
+                            <li><h4>poblacion (list):</h4> Una lista que contiene los individuos de la población de los cuales se realizará la selección.</li>
+                            <li><h4>puntuaciones (list):</h4> Una lista de puntuaciones asociadas a cada individuo en la población. Debe tener la misma longitud que población.
+                            <li><h4>k (int, opcional):</h4> El número de individuos a seleccionar aleatoriamente para el torneo. Por defecto es 3. </li>
+                        </ul>
+                        <h4 class="titulo-h4">Retorno</h4>
+                        <ul>
+                            <li><h4>(cualquier):</h4> Devuelve el individuo de la población que tiene la puntuación más baja entre los seleccionados en el torneo.</li>
+                        </ul>
+                        <h4 class="titulo-h4">Excepciones</h4>
+                        <ul>
+                            <li><h4>ValueError:</h4> Se lanza si k es mayor que el número total de individuos en población.</li>
+                            <li><h4>IndexError:</h4> Puede ocurrir si las listas población y puntuaciones no tienen la misma longitud.</li>
+                        </ul>
+                        </p>
+                        <h4 class="titulo-h4">Ejemplo de Uso</h4>
+                        <p>
+                            <div class="contenedor_codigo_ejemplo">
+                                <pre class="preCode">
+                                    seleccionado = seleccion_por_torneo(poblacion, puntuaciones, k=3)
+                                    print(f"Individuo seleccionado: {seleccionado}")
+                                </pre>
+                            </div>
+                        </p>      
+
+                </section>
+                <section class="seleccionRanking" id="seleccionRanking">
+                    <h2 class="contenido_todo">Seleccion por Ranking</h2><br>
+                        <div class="contenedor_codigo">
+                            <pre class="preCode">
+                                def seleccion_por_ranking(poblacion, puntuaciones):
+                                    # Ordenamos la población por las puntuaciones en orden ascendente
+                                    ranking = sorted(range(len(puntuaciones)), key=lambda i: puntuaciones[i])
+                                    
+                                    # Asignamos una probabilidad basada en el ranking (mejor tiene más probabilidad)
+                                    probabilidades = [1 / (i + 1) for i in range(len(poblacion))]
+                                    
+                                    # Normalizamos las probabilidades
+                                    suma_probabilidades = sum(probabilidades)
+                                    probabilidades = [p / suma_probabilidades for p in probabilidades]
+                                    
+                                    # Seleccionamos un individuo basado en las probabilidades
+                                    seleccionado = random.choices(ranking, probabilidades)[0]
+                                    return poblacion[seleccionado]
+                            </pre>
+                        </div>
+                        <h4 class="titulo-h4">Descripción</h4>
+                        <p>Selecciona un individuo de la población utilizando el método de selección por ranking. Este método asigna probabilidades de selección basadas en el orden de puntuación de cada individuo, de modo que los individuos con mejores puntuaciones (puntuaciones más bajas) tienen mayor probabilidad de ser seleccionados. Esta técnica se emplea en algoritmos genéticos para favorecer a los individuos de alto rendimiento, manteniendo cierta diversidad en la selección.
+                        </p><br>
+                        <h4 class="titulo-h4">Parámetros</h4>
+                        <ul>
+                            <li><h4>Poblacion (list):</h4>Una lista que contiene todos los individuos de la población.
+                            </li>
+                            <li><h4>Puntuaciones (list):</h4>Una lista de puntuaciones correspondientes a cada individuo en la población, donde cada índice coincide con el de poblacion.
+                            </li><br>
+                        </ul>
+                        <h4 class="titulo-h4">Retorno</h4>
+                        <p>Un individuo de la población seleccionado según el método de ranking, donde los mejores individuos tienen más probabilidad de ser elegidos.</p><br>
+                        <h4 class="titulo-h4">Excepciones</h4>
+                        <p>IndexError: Podría ocurrir si la longitud de poblacion y puntuaciones no coinciden. </p><br>
+                        <h4 class="titulo-h4">Ejemplo de uso</h4>
+                        <p>
+                            <div class="contenedor_codigo_ejemplo">
+                                <pre class="preCode">
+                                    poblacion = ["individuo1", "individuo2", "individuo3", "individuo4"]
+                                    puntuaciones = [3.2, 1.5, 2.7, 0.9] <br>
+
+                                    seleccionado = seleccion_por_ranking(poblacion, puntuaciones)
+                                    print(f"Individuo seleccionado: {seleccionado}")
+                                </pre>
+                            </div>
+                        </p>
+                            
+                </section>
+                <section class="seleccionRuleta" id="seleccionRuleta">
+                    <h2 class="contenido_todo">Seleccion por Ruleta</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def seleccion_por_ruleta(poblacion, puntuaciones):
+                                # Calcular el total de las puntuaciones
+                                total_puntuaciones = sum(puntuaciones)
+
+                                # Calcular las probabilidades como proporción de las puntuaciones
+                                probabilidades = [puntuacion / total_puntuaciones for puntuacion in puntuaciones]
+
+                                # Seleccionar un individuo basado en las probabilidades
+                                seleccionado = random.choices(poblacion, probabilidades)[0]
+
+                                return seleccionado
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción</h4>
+                    <p>La función seleccion_por_ruleta implementa el método de selección por ruleta, asignando probabilidades de selección proporcionales a las puntuaciones de cada individuo en la población. De esta manera, los individuos con puntuaciones más altas tienen una mayor probabilidad de ser seleccionados. Este método es útil en algoritmos evolutivos y genéticos para favorecer a los individuos mejor puntuados, balanceando el azar y la calidad en la selección.
+                    </p>
+                    <h4 class="titulo-h4">Parámetros</h4>
+                    <ul>
+                        <li><h4>Poblacion (list):</h4>Una lista que contiene todos los individuos de la población.</li>
+                        <li><h4>Puntuaciones (list):</h4>Una lista de puntuaciones asociadas a cada individuo en la población. Las puntuaciones determinan la probabilidad de cada individuo de ser seleccionado, con puntuaciones más altas representando mayor probabilidad.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Retorno</h4>
+                    <p>Un individuo de la población seleccionado de acuerdo con las probabilidades asignadas por el método de ruleta.</p>
+                    <h4 class="titulo-h4">Excepciones</h4>
+                    <ul>
+                        <li><h4>ZeroDivisionError: </h4>Puede ocurrir si la suma de las puntuaciones es cero, ya que no es posible calcular probabilidades válidas.</li>
+                        <li><h4>IndexError:</h4>Puede surgir si la longitud de poblacion y puntuaciones no coinciden.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Ejemplo de uso desde otro archivo</h4>
+                    <p>Define una población y sus puntuaciones, y llama a la función:</p><br>
+                    <div class="contenedor_codigo_ejemplo">
+                        <pre class="preCode">
+                            poblacion = ["individuo1", "individuo2", "individuo3", "individuo4"]
+                            puntuaciones = [0.3, 0.5, 0.1, 0.8]
+
+                            seleccionado = seleccion_por_ruleta(poblacion, puntuaciones)
+                            print(f"Individuo seleccionado: {seleccionado}")
+                        </pre>
+                    </div>
+                </section>
+
+                <section class="crucePunto" id="crucePunto">
+                    <h2 class="contenido_todo">Cruce de un Punto</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def cruce_un_punto_flotante(padre1, padre2):
+                            punto_cruce = random.uniform(0, 1)  # Elegir un punto de cruce entre 0 y 1
+                            hijo1 = padre1 * punto_cruce + padre2 * (1 - punto_cruce)  # Mezcla los padres
+                            hijo2 = padre2 * punto_cruce + padre1 * (1 - punto_cruce)  # Mezcla los padres
+                            return hijo1, hijo2                        
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción</h4>
+                    <p>La función cruce_un_punto_flotante implementa el método de cruce en un punto flotante, que es una técnica utilizada en algoritmos genéticos. En este método, se elige un punto de cruce aleatorio entre 0 y 1, y se combinan dos padres (representados como valores numéricos) para crear dos nuevos hijos. Cada hijo es una mezcla ponderada de los padres, determinada por el valor del punto de cruce.
+                    </p>
+                    <h4 class="titulo-h4">Parámetros</h4>
+                    <ul>
+                        <li><h4>Padre1 (float):</h4> El primer padre, representado como un valor numérico.</li>
+                        <li><h4>Padre2 (float):</h4> El segundo padre, representado como un valor numérico.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Retorno</h4>
+                    <p>Una tupla con dos hijos (float), generados como combinaciones ponderadas de padre1 y padre2:</p>
+                    <ul>
+                        <li><h4>Hijo1:</h4> Combinación del padre1 y padre2 en función del punto de cruce.</li>
+                        <li><h4>hijo2:</h4> Combinación del padre2 y padre1 en función del punto de cruce.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Excepciones</h4>
+                    <p>No se contemplan excepciones específicas, ya que esta función depende de entradas numéricas válidas para padre1 y padre2.</p>
+                    <h4 class="titulo-h4">Ejemplo de uso desde otro archivo</h4>
+                        <div class="contenedor_codigo_ejemplo">
+                            <pre class="preCode">
+                                            poblacion = ["individuo1", "individuo2", "individuo3", "individuo4"]
+                                            puntuaciones = [3.2, 1.5, 2.7, 0.9]
+        
+                                            seleccionado = seleccion_por_ranking(poblacion, puntuaciones)
+                                            print(f"Individuo seleccionado: {seleccionado}")
+                             </pre>
+                        </div>
+                </section>
+                <section class="cruceDosPuntos" id="cruceDosPuntos">
+                    <h2 class="contenido_todo">Cruce de Dos Puntos</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def cruce_dos_puntos(padre1, padre2):
+                                punto_cruce1 = random.uniform(0, 1)
+                                punto_cruce2 = random.uniform(0, 1)
+                                punto_cruce1, punto_cruce2 = min(punto_cruce1, punto_cruce2), max(punto_cruce1, punto_cruce2)
+                                hijo1 = padre1 * punto_cruce1 + padre2 * (punto_cruce2 - punto_cruce1)
+                                hijo2 = padre2 * punto_cruce1 + padre1 * (punto_cruce2 - punto_cruce1)
+                                return hijo1, hijo2
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción</h4>
+                    <p>La función cruce_dos_puntos implementa el método de cruce de dos puntos, que es una técnica utilizada en algoritmos genéticos. En este método, se eligen dos puntos de cruce aleatorios entre 0 y 1, y se combinan dos padres (representados como valores numéricos) para crear dos nuevos hijos. Cada hijo es una mezcla ponderada de los padres, determinada por los valores de los puntos de cruce.</p>
+                    <h4 class="titulo-h4">Parámetros</h4>
+                    <ul>
+                        <li><h4>Padre1 (float):</h4> El primer padre, representado como un valor numérico.</li>
+                        <li><h4>Padre2 (float):</h4> El segundo padre, representado como un valor numérico.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Retorno</h4>
+                    <p>Una tupla con dos hijos (float), generados como combinaciones ponderadas de padre1 y padre2:</p>
+                    <ul>
+                        <li><h4>Hijo1:</h4> Combinación del padre1 y padre2 en función de los puntos de cruce.</li>
+                        <li><h4>Hijo2:</h4> Combinación del padre2 y padre1 en función de los puntos de cruce.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Excepciones</h3>
+                    <p>No se contemplan excepciones específicas, ya que esta función depende de entradas numéricas válidas para padre1 y padre2.</p>
+                    <h4 class="titulo-h4">Ejemplo de uso</h4>
+                    <div class="contenedor_codigo_ejemplo">
+                            <pre class="preCode">
+                                padre1 = 170  # 10101010 en binario
+                                padre2 = 85  # 01010101 en binario<br>
+                                hijo1, hijo2 = cruce_dos_puntos(padre1, padre2)<br>
+                                print(f"Padre 1: {padre1:08b}, Padre 2: {padre2:08b}")
+                                print(f"Hijo 1: {hijo1:08b}, Hijo 2: {hijo2:08b}")
+        
+                             </pre>
+                    </div>
+                        
+                </section>
+
+
+                <section class="cruceUniforme" id="cruceUniforme">
+                    <h2 class="contenido_todo">Cruce Uniforme</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def cruce_uniforme(padre1, padre2, probabilidad=0.5):
+                                hijo1 = padre1 * (1 - probabilidad) + padre2 * probabilidad
+                                hijo2 = padre2 * (1 - probabilidad) + padre1 * probabilidad
+                                return hijo1, hijo2             
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción</h4>
+                    <p>La función cruce_uniforme implementa el método de cruce uniforme, que es una técnica utilizada en algoritmos genéticos. En este método, se combina dos padres (representados como valores numéricos) para crear dos nuevos hijos, utilizando una probabilidad de cruce. Cada hijo es una mezcla ponderada de los padres, determinada por la probabilidad de cruce.</p>
+                    <h4 class="titulo-h4">Parámetros</h4>
+                    <ul>
+                        <li><h4>Padre1 (float):</h4> El primer padre, representado como un valor numérico.</li>
+                        <li><h4>Padre2 (float):</h4> El segundo padre, representado como un valor numérico.</li>
+                        <li><h4>Probabilidad (float, opcional):</h4> La probabilidad de cruce, por defecto es 0.5.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Retorno</h4>
+                    <p>Una tupla con dos hijos (float), generados como combinaciones ponderadas de padre1 y padre2:</p>
+                    <ul>
+                        <li><h4>Hijo1:</h4> Combinación del padre1 y padre2 en función de la probabilidad de cruce.</li>
+                        <li><h4>Hijo2:</h4> Combinación del padre2 y padre1 en función de la probabilidad de cruce.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Excepciones</h4>
+                    <p>No se contemplan excepciones específicas, ya que esta función depende de entradas numéricas válidas para padre1 y padre2.</p>
+                    <h4 class="titulo-h4">Ejemplo de uso</h4>
+                    <div class="contenedor_codigo_ejemplo">
+                        <pre class="preCode">
+                            padre1 = 170  # 10101010 en binario
+                            padre2 = 85  # 01010101 en binario<br>
+                            hijo1, hijo2 = cruce_uniforme(padre1, padre2, probabilidad=0.7)<br>
+                            print(f"Padre 1: {padre1:08b}, Padre 2: {padre2:08b}")
+                            print(f"Hijo 1: {hijo1:08b}, Hijo 2: {hijo2:08b}")
+                         </pre>
+                    </div>
+                </section>
+
+                <section class="crucePromedioAritmetico" id="crucePromedioAritmetico">
+                    <h2 class="contenido_todo">Cruce por Promedio Aritmetico</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def cruce_promedio_aritmetico(padre1, padre2):
+                                hijo1 = (padre1 + padre2) / 2
+                                hijo2 = (padre2 + padre1) / 2
+                                return hijo1, hijo2             
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción</h4>
+                    <p>La función cruce_promedio_aritmetico implementa el método de cruce por promedio aritmético, que es una técnica utilizada en algoritmos genéticos. En este método, se combina dos padres (representados como valores numéricos) para crear dos nuevos hijos, utilizando el promedio aritmético de los padres. Cada hijo es una mezcla ponderada de los padres, determinada por el promedio aritmético.</p>
+                    <h4 class="titulo-h4">Parámetros</h4>
+                    <ul>
+                        <li><h4>Padre1 (float):</h4> El primer padre, representado como un valor numérico.</li>
+                        <li><h4>Padre2 (float):</h4> El segundo padre, representado como un valor numérico.</li>
+                        <li><h4>Probabilidad (float, opcional):</h4> La probabilidad de cruce, por defecto es 0.5.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Retorno</h4>
+                    <p>Una tupla con dos hijos (float), generados como combinaciones ponderadas de padre1 y padre2:</p>
+                    <ul>
+                        <li><h4>Hijo1:</h4> Combinación del padre1 y padre2 en función del promedio aritmético.</li>
+                        <li><h4>Hijo2:</h4> Combinación del padre2 y padre1 en función del promedio aritmético.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Excepciones</h4>
+                    <p>No se contemplan excepciones específicas, ya que esta función depende de entradas numéricas válidas para padre1 y padre2.</p>
+                    <h4 class="titulo-h4">Ejemplo de uso</h4>
+                    <div class="contenedor_codigo_ejemplo">
+                        <pre class="preCode">
+                            padre1 = 170  # 10101010 en binario
+                            padre2 = 85  # 01010101 en binario<br>
+                            hijo1, hijo2 = cruce_promedio_aritmetico(padre1, padre2)<br>
+                            print(f"Padre 1: {padre1:08b}, Padre 2: {padre2:08b}")
+                            print(f"Hijo 1: {hijo1:08b}, Hijo 2: {hijo2:08b}")
+                         </pre>
+                    </div>
+                </section>
+
+
+                <section class="mutacion" id="mutacion">
+                    <h2 class="contenido_todo">Mutación</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def mutacion(individuo, probabilidad_mutacion, limite_inferior, limite_superior):
+                                if random.random() < probabilidad_mutacion:
+                                    nuevo_valor = random.uniform(limite_inferior, limite_superior)
+                                    return nuevo_valor
+                                else:
+                                    return individuo            
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción</h4>
+                    <p>La función mutacion implementa el método de mutación, que es una técnica utilizada en algoritmos genéticos. En este método, se introduce una variación aleatoria en un individuo (representado como un valor numérico) con una probabilidad de mutación determinada. Si se cumple la condición de mutación, se genera un nuevo valor dentro de los límites establecidos. </p>
+                    <h4 class="titulo-h4">Parámetros</h4>
+                    <ul>
+                        <li><h4>Individuo (float):</h4> El individuo que se va a mutar.</li>
+                        <li><h4>Probabilidad_mutacion (float):</h4> La probabilidad de que ocurra la mutación.</li>
+                        <li><h4>Limite_inferior (float):</h4> El límite inferior del rango de valores posibles para la mutación.</li>
+                        <li><h4>Limite_superior (float):</h4> El límite superior del rango de valores posibles para la mutación.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Retorno</h4>
+                    <p>Un valor numérico que representa el individuo mutado.</p>
+                    <h4 class="titulo-h4">Excepciones</h4>
+                    <p>No se contemplan excepciones específicas, ya que esta función depende de entradas numéricas válidas para los parámetros.</p>
+                    <h4 class="titulo-h4">Ejemplo de uso</h4>
+                     <div class="contenedor_codigo_ejemplo">
+                        <pre class="preCode">
+                            individuo = 170  # 10101010 en binario
+                            probabilidad_mutacion = 0.1
+                            limite_inferior = 0
+                            limite_superior = 255<br>
+                            nuevo_individuo = mutacion(individuo, probabilidad_mutacion, limite_inferior, limite_superior)<br>
+                            print(f"Individuo original: {individuo:08b}")
+                            print(f"Individuo mutado: {nuevo_individuo:08b}")
+                         </pre>
+                    </div>
+                </section>
+
+                <section class="sustitucion" id="sustitucion">
+                    <h2 class="contenido_todo">Sustitucion</h2><br>
+                    <div class="contenedor_codigo">
+                        <pre class="preCode">
+                            def sustitucion(individuo, nuevo_valor):
+                            return nuevo_valor             
+                        </pre>
+                    </div>
+                    <h4 class="titulo-h4">Descripción</h4>
+                    <p>La función sustitucion reemplaza un individuo (representado como un valor numérico) por un nuevo valor.</p>
+                    <h4 class="titulo-h4">Parámetros</h4>
+                    <ul>
+                        <li><h4>Individuo (float):</h4> El individuo que se va a reemplazar.</li>
+                        <li><h4>Nuevo_valor (float):</h4> El nuevo valor que reemplazará al individuo.</li>
+                    </ul>
+                    <h4 class="titulo-h4">Retorno</h4>
+                    <p>El nuevo valor que reemplaza al individuo.</p>
+                    <h4 class="titulo-h4">Excepciones</h4>
+                    <p>No se contemplan excepciones específicas, ya que esta función depende de entradas numéricas válidas para los parámetros.</p>
+                    <h4 class="titulo-h4">Ejemplo de uso</h4>
+                    <div class="contenedor_codigo_ejemplo">
+                        <pre class="preCode">
+                            individuo = 170  # 10101010 en binario
+                            nuevo_valor = 85  # 01010101 en binarioz<br>
+                            nuevo_individuo = sustitucion(individuo, nuevo_valor)<br>
+                            print(f"Individuo original: {individuo:08b}")
+                            print(f"Individuo sustituido: {nuevo_individuo:08b}")
+                         </pre>
+                    </div>
+                </section>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-description">
+                    <h3>Unéte a EvoSolver</h3>
+                    <p>"Desata el poder de la evolución en la resolución de problemas complejos y optimización mediante algoritmos genéticos.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Desarrollador por</h3>
+                    <ul>
+                        <li><a>Karen Yulieth Plazas Ramirez</a></li>
+                        <li><a>Julian David Gonzalez Esteban</a></li>
+                        <li><a>Hermes Duván Castro Ruiz</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                        <h3>Conéctate</h3>
+                        <div class="social-icons">
+                          <a href="https://www.facebook.com/ucundinamarcaoficial?mibextid=kFxxJD"><i class="fab fa-facebook-f"></i></a>
+                          <a href="https://www.ucundinamarca.edu.co/"><i class="fab fa-twitter"></i></a>
+                          <a href="https://www.facebook.com/ucundinamarcaoficial?mibextid=kFxxJD"><i class="fab fa-instagram"></i></a>
+                        </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Copyright: Universidad de Cundinamarca</p>
+            </div>
+        </footer>
+    </div>
+    </div>
+
+    <button onclick="scrollToTop()" id="backToTop">↑</button>
+    <script src="javas.js" ></script>
+
+    
+    
+
+
+</body>
+</html>
